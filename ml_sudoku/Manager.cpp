@@ -120,6 +120,20 @@ void Manager::make_win()
 		_won = true;
 }
 
+void Manager::count_mistakes(int i)
+{
+	if (_field[i].get_mistake() && !_field[i].get_mistake_counted())
+	{
+		_field[i].mistake_counted_set(true);
+		_mistakes++;
+		std::cout << "Mistake " << _mistakes << " /3" << std::endl;
+		if (_mistakes >= 3)
+		{
+			_lost = true;
+		}
+	}
+}
+
 void Manager::init_field(sf::Font* font, int row_count)
 {
 	init_norm();
@@ -190,9 +204,19 @@ void Manager::play_lil_anim()
 {
 	static int ind = -1;
 	if (ind == -1)
+	{	
+		if(_won)
 		std::cout << "YOU WON!! Press R to restart." << std::endl;
-	if(++ind <_field.size())
+		if(_lost)
+		std::cout << "YOU LOST!! Press R to restart." << std::endl;
+	}
+	if (++ind < _field.size())
+	{
+		if(_won)
 		_field[ind].win();
+		if(_lost)
+			_field[ind].loose();
+	}
 }
 
 void Manager::check_reset()
@@ -200,6 +224,8 @@ void Manager::check_reset()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
 		_won = false;
+		_lost = false;
+		_mistakes = 0;
 		_field.clear();
 		init_field(_font, _rCount);
 	}
@@ -209,13 +235,16 @@ void Manager::update()
 {
 	for (int i = 0; i < _field.size(); i++)
 	{
-		if(!_won)
+		if (!_won && !_lost)
+		{
 			check_mouse(i);
+			count_mistakes(i);
+		}
 		_field[i].update();
 	}
 	make_win();
 
-	if (_won)
+	if (_won||_lost)
 	{
 		play_lil_anim();
 		check_reset();

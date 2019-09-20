@@ -27,11 +27,20 @@ private:
 	sf::Vector2f center_text();
 
 	bool _won = false;
+	bool _lost = false;
+	bool made_mistake = false;
+	bool mistake_set = false;
+
+	bool _clicked = false;
 
 public:
+	void mistake_counted_set(bool val);
+	bool get_mistake();
+	bool get_mistake_counted();
 	sf::CircleShape _valObj;
 	bool is_right();
 	void win();
+	void loose();
 	void toggle_mark(bool val);
 
 	bool remove();

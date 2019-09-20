@@ -14,12 +14,16 @@ class Manager
 {
 private:
 	bool _won = false;
+	bool _lost = false;
 
 	void check_reset();
 
 	sf::Font* _font;
 
 	int _rCount;
+
+	void count_mistakes(int i);
+	int _mistakes = 0;
 
 	void play_lil_anim();
 

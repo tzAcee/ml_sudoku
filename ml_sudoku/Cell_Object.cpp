@@ -62,6 +62,11 @@ void Cell_Object::win()
 	_won = true;
 }
 
+void Cell_Object::loose()
+{
+	_lost = true;
+}
+
 bool Cell_Object::remove()
 {
 	if (is_static)
@@ -79,27 +84,50 @@ bool Cell_Object::remove()
 void Cell_Object::set_val(int val)
 {
 	_val = val;
-	if (val != -1)
+	if (val != 10)
 	{
-		_text->setString(std::to_string(_val));
+		if (val != -1)
+		{
+			_text->setString(std::to_string(_val));
+			mistake_set = false;
+		}
+		else
+		{
+			_text->setString("");
+		}
 	}
 	else
 	{
-		_text->setString("");
+		_text->setString(":(");
 	}
+}
+
+bool Cell_Object::get_mistake()
+{
+	return made_mistake;
+}
+
+void Cell_Object::mistake_counted_set(bool val)
+{
+	mistake_set = val;
+}
+
+bool Cell_Object::get_mistake_counted()
+{
+	return mistake_set;
 }
 
 void Cell_Object::manage_states()
 {
-	if (!_won)
+	if (!_won && !_lost)
 	{
 		if (is_marked)
 		{
-
 			_valObj.setFillColor(sf::Color(150, 210, 210, 100));
 		}
 		else if (!is_right() && _val != 65535)
 		{
+			made_mistake = true;
 			_valObj.setFillColor(sf::Color(250, 100, 150, 100));
 		}
 		else
@@ -112,12 +140,18 @@ void Cell_Object::manage_states()
 		{
 			_text->setFillColor(sf::Color::White);
 		}
-	}
-	else
+	} 
+	else if(_won)
 	{
 		set_val(0);
 		is_marked = false;
 		_valObj.setFillColor(sf::Color(230, 150, 250, 80));
+	}
+	else if(_lost)
+	{
+		set_val(10);
+		is_marked = false;
+		_valObj.setFillColor(sf::Color(250, 150, 50, 80));
 	}
 }
 
@@ -132,44 +166,86 @@ void Cell_Object::manage_fill_in()
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
 		{
-			set_val(1);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(1);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
 		{
-			set_val(2);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(2);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
 		{
-			set_val(3);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(3);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
 		{
-			set_val(4);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(4);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
 		{
-			set_val(5);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(5);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
 		{
-			set_val(6);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(6);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
 		{
-			set_val(7);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(7);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
 		{
-			set_val(8);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(8);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
 		{
-			set_val(9);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(9);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			set_val(-1);
+			if (!_clicked)
+			{
+				_clicked = true;
+				set_val(-1);
+			}
 		}
+		else
+			_clicked = false;
 	}
 }
 
