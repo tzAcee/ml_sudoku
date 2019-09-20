@@ -58,7 +58,7 @@ int main()
 		if (inp == "HARD")
 			inp = "3";
 
-	sf::RenderWindow win(sf::VideoMode(700, 700, 64), "Sudoku_FLEX", sf::Style::Titlebar | sf::Style::Close);
+	sf::RenderWindow win(sf::VideoMode(800, 800, 64), "Sudoku_FLEX", sf::Style::Titlebar | sf::Style::Close);
 
 	sf::Vector2f size = draw_seperation_line(win, 2);
 	Manager manager(&win, size, 3, (Difficulty)std::stoi(inp));

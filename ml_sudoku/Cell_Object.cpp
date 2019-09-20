@@ -45,6 +45,31 @@ Cell_Object::Cell_Object(sf::RenderWindow* win, sf::Vector2f pos, sf::Vector2f s
 	_valObj.setRadius(_backObj.getSize().x / 2.f -5.f);
 	_valObj.setOrigin(_valObj.getRadius(), _valObj.getRadius());
 	_valObj.setPosition(_pos.x+_backObj.getSize().x/2.f, _pos.y+_backObj.getSize().y/2.f);
+
+//	_notes.resize(9);
+//	_notes = { 1,2,3,4,5,6,7,8,9 };
+//	set_notes();
+}
+
+void Cell_Object::set_notes()
+{
+	_noteText.resize(_notes.size());
+	float off = (_size.y/3.f) / 4.f;
+	for (int i = 0; i<_notes.size(); i++)
+	{
+		_noteText[i].setFont(*_font);
+		_noteText[i].setCharacterSize(13);
+		if (i % 2 == 0)
+		{
+			_noteText[i].setPosition(_pos.x+3,_pos.y + off * i);
+		}
+		else
+		{
+			_noteText[i].setPosition(_pos.x+_size.x-13, _pos.y + off * i);
+		}
+		_noteText[i].setString(std::to_string(_notes[i]));
+		_noteText[i].setFillColor(sf::Color::Black);
+	}
 }
 
 void Cell_Object::toggle_mark(bool val)
@@ -164,7 +189,7 @@ void Cell_Object::manage_fill_in()
 {
 	if (is_marked)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
@@ -172,7 +197,7 @@ void Cell_Object::manage_fill_in()
 				set_val(1);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
@@ -180,7 +205,7 @@ void Cell_Object::manage_fill_in()
 				set_val(2);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
@@ -188,7 +213,7 @@ void Cell_Object::manage_fill_in()
 				set_val(3);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
@@ -196,7 +221,7 @@ void Cell_Object::manage_fill_in()
 				set_val(4);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
@@ -204,7 +229,7 @@ void Cell_Object::manage_fill_in()
 				set_val(5);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
@@ -212,7 +237,7 @@ void Cell_Object::manage_fill_in()
 				set_val(6);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
@@ -220,7 +245,7 @@ void Cell_Object::manage_fill_in()
 				set_val(7);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
@@ -228,7 +253,7 @@ void Cell_Object::manage_fill_in()
 				set_val(8);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
@@ -236,12 +261,135 @@ void Cell_Object::manage_fill_in()
 				set_val(9);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		{
 			if (!_clicked)
 			{
 				_clicked = true;
 				set_val(-1);
+			}
+		}
+		else
+		{
+			if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+			_clicked = false;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				if (_notes.size() < 9)
+				{
+					_notes.push_back(1);
+					set_notes();
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				if (_notes.size() < 9)
+				{
+					_notes.push_back(2);
+					set_notes();
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				if (_notes.size() < 9)
+				{
+					_notes.push_back(3);
+					set_notes();
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				if (_notes.size() < 9)
+				{
+					_notes.push_back(4);
+					set_notes();
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				if (_notes.size() < 9)
+				{
+					_notes.push_back(5);
+					set_notes();
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				if (_notes.size() < 9)
+				{
+					_notes.push_back(6);
+					set_notes();
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				if (_notes.size() < 9)
+				{
+					_notes.push_back(7);
+					set_notes();
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				if (_notes.size() < 9)
+				{
+					_notes.push_back(8);
+					set_notes();
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				if (_notes.size() < 9)
+				{
+					_notes.push_back(9);
+					set_notes();
+				}
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+		{
+			if (!_clicked)
+			{
+				_clicked = true;
+				_notes.clear();
+				set_notes();
 			}
 		}
 		else
@@ -257,4 +405,7 @@ void Cell_Object::update()
 	_win->draw(_backObj);
 	_win->draw(_valObj);
 	_win->draw(*_text);
+
+	for (int i = 0; i < _noteText.size(); i++)
+		_win->draw(_noteText[i]);
 }

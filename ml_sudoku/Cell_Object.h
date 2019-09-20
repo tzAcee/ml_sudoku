@@ -26,6 +26,11 @@ private:
 
 	sf::Vector2f center_text();
 
+	std::vector<int> _notes;
+	std::vector<sf::Text> _noteText;
+
+	void set_notes();
+
 	bool _won = false;
 	bool _lost = false;
 	bool made_mistake = false;
