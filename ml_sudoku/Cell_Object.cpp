@@ -98,12 +98,15 @@ void Cell_Object::manage_states()
 
 			_valObj.setFillColor(sf::Color(150, 210, 210, 100));
 		}
+		else if (!is_right() && _val != 65535)
+		{
+			_valObj.setFillColor(sf::Color(250, 100, 150, 100));
+		}
 		else
 		{
 			_text->setFillColor(sf::Color::Black);
 			_valObj.setFillColor(sf::Color(230, 230, 250, 80));
 		}
-
 
 		if (is_static)
 		{
