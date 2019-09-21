@@ -163,6 +163,7 @@ void Cell_Object::manage_states()
 		}
 		else
 		{
+			made_mistake = false;
 			_text->setFillColor(sf::Color::Black);
 			_valObj.setFillColor(sf::Color(230, 230, 250, 80));
 		}
@@ -405,8 +406,8 @@ void Cell_Object::manage_fill_in()
 
 void Cell_Object::update()
 {
-	manage_states();
 	manage_fill_in();
+	manage_states();
 
 	_win->draw(_backObj);
 	_win->draw(_valObj);
