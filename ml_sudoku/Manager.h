@@ -2,6 +2,13 @@
 #include "SFML/Graphics.hpp"
 #include "Cell_Object.h"
 #include <iostream>
+#include <Windows.h>
+
+struct Values
+{
+	int val;
+	int count;
+};
 
 enum Difficulty
 {
@@ -13,8 +20,14 @@ enum Difficulty
 class Manager
 {
 private:
+
+	std::vector<Values> _values;
+	void init_values();
+	void count_field(int i);
 	bool _won = false;
 	bool _lost = false;
+
+	bool app_in_focus();
 
 	void check_reset();
 
@@ -28,6 +41,7 @@ private:
 	void play_lil_anim();
 
 	sf::RenderWindow* _win;
+	sf::RenderWindow* _statWin;
 	sf::Vector2f _cellSize;
 
 	std::vector<Cell_Object> _field;
@@ -49,10 +63,16 @@ private:
 
 	Difficulty _dif;
 
+	std::vector<sf::Text> _valStat;
+	std::vector<sf::Text> _countStat;
+
+	void init_text();
+	void set_string();
+
 public:
 	Manager();
 	~Manager();
-	Manager(sf::RenderWindow* win, sf::Vector2f& size, int row_count, Difficulty dif);
+	Manager(sf::RenderWindow* win, sf::Vector2f& size, int row_count, Difficulty dif, sf::RenderWindow *statWin);
 
 	void update();
 };

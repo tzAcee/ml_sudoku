@@ -15,6 +15,11 @@ sf::Vector2f Cell_Object::center_text()
 	return sf::Vector2f(_pos.x + _backObj.getSize().x * 0.5, _pos.y + _backObj.getSize().y * 0.30f);
 }
 
+int Cell_Object::get_val()
+{
+	return _val;
+}
+
 Cell_Object::Cell_Object(sf::RenderWindow* win, sf::Vector2f pos, sf::Vector2f size, uint16_t val, bool stati, sf::Font* font)
 {
 	_win = win;
@@ -115,6 +120,7 @@ void Cell_Object::set_val(int val)
 		{
 			_text->setString(std::to_string(_val));
 			mistake_set = false;
+			is_marked = false;
 		}
 		else
 		{

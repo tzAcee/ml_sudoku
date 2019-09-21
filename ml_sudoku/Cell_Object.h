@@ -57,7 +57,7 @@ public:
 
 	Cell_Object(sf::RenderWindow* win, sf::Vector2f pos, sf::Vector2f size, uint16_t val, bool stati, sf::Font *font);
 
-
+	int get_val();
 
 	void update();
 };

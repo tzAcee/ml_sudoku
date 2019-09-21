@@ -160,11 +160,16 @@ void Manager::init_field(sf::Font* font, int row_count)
 	}
 }
 
-Manager::Manager(sf::RenderWindow* win, sf::Vector2f& size, int row_count, Difficulty dif)
+Manager::Manager(sf::RenderWindow* win, sf::Vector2f& size, int row_count, Difficulty dif, sf::RenderWindow *statWin)
 {
+	init_values();
+
+	_statWin = statWin;
 	_dif = dif;
 	_win = win;
 	_cellSize = size;
+
+	init_text();
 
 	_font = new sf::Font;
 
@@ -200,6 +205,13 @@ void Manager::check_mouse(int i)
 	}
 }
 
+void Manager::init_text()
+{
+	_valStat.resize(9);
+	_countStat.resize(9);
+
+}
+
 void Manager::play_lil_anim()
 {
 	static int ind = -1;
@@ -212,11 +224,13 @@ void Manager::play_lil_anim()
 	}
 	if (++ind < _field.size())
 	{
-		if(_won)
-		_field[ind].win();
-		if(_lost)
+		if (_won)
+			_field[ind].win();
+		if (_lost)
 			_field[ind].loose();
 	}
+	else
+		ind = -1;
 }
 
 void Manager::check_reset()
@@ -231,18 +245,73 @@ void Manager::check_reset()
 	}
 }
 
+bool Manager::app_in_focus()
+{
+	return true;
+}
+
+void Manager::init_values()
+{
+	_values.resize(9);
+	for (int i = 0; i < 9; i++)
+		_values[i].val = i + 1;
+}
+
+void Manager::count_field(int i)
+{
+	for (int j = 0; j < _values.size(); j++)
+	{
+		if (_field[i].get_val() == _values[j].val && _field[i].is_right())
+		{
+			_values[j].count++;
+		}
+	}
+}
+
+void Manager::set_string()
+{
+	for (int i = 0; i < 9; i++)
+	{
+		_valStat[i].setFont(*_font);
+		_valStat[i].setCharacterSize(20);
+		_valStat[i].setPosition(_statWin->getSize().x * 0.1, _statWin->getSize().y / 9 * i + 1);
+		_valStat[i].setFillColor(sf::Color(85, 85, 85));
+		if(_values[i].count == 9)
+			_valStat[i].setFillColor(sf::Color(85, 255, 85));
+
+		_countStat[i].setFont(*_font);
+		_countStat[i].setCharacterSize(12);
+		_countStat[i].setPosition(_statWin->getSize().x * 0.62, _statWin->getSize().y / 9 * i + 1);
+		_countStat[i].setFillColor(sf::Color(169, 169, 169));
+
+		_countStat[i].setString(std::to_string(_values[i].count));
+		_valStat[i].setString(std::to_string(_values[i].val));
+
+		_statWin->draw(_countStat[i]);
+		_statWin->draw(_valStat[i]);
+	}
+}
+
 void Manager::update()
 {
+	_values.clear();
+	init_values();
 	for (int i = 0; i < _field.size(); i++)
 	{
 		if (!_won && !_lost)
 		{
 			check_mouse(i);
 			count_mistakes(i);
+			count_field(i);
 		}
+		if(app_in_focus())
 		_field[i].update();
 	}
 	make_win();
+
+	set_string();
+
+	//_statWin->draw(sf::CircleShape(15));
 
 	if (_won||_lost)
 	{

@@ -25,6 +25,11 @@ sf::Vector2f draw_seperation_line(sf::RenderWindow& win, int count)
 	return sf::Vector2f(win.getSize().x / (count + 1), win.getSize().y / (count + 1));
 }
 
+void adjust_pos(sf::RenderWindow& win, sf::RenderWindow& to_win)
+{
+	to_win.setPosition(sf::Vector2i(win.getPosition().x + win.getSize().x+8, win.getPosition().y + 0.7 * win.getSize().y));
+}
+
 int main()
 {
 	std::cout << "DIFFICULTIES:" << std::endl;
@@ -59,24 +64,35 @@ int main()
 			inp = "3";
 
 	sf::RenderWindow win(sf::VideoMode(800, 800, 64), "Sudoku_FLEX", sf::Style::Titlebar | sf::Style::Close);
+	sf::RenderWindow stat_win(sf::VideoMode(50, 170), "stats", sf::Style::None);
 
 	sf::Vector2f size = draw_seperation_line(win, 2);
-	Manager manager(&win, size, 3, (Difficulty)std::stoi(inp));
+	Manager manager(&win, size, 3, (Difficulty)std::stoi(inp), &stat_win);
 
 
 	while (win.isOpen())
 	{
 		sf::Event _ev;
 		while (win.pollEvent(_ev))
+		{
+			adjust_pos(win, stat_win);
 			if (_ev.type == sf::Event::Closed)
+			{
 				win.close();
+				stat_win.close();
+			}
+		}
+
+		adjust_pos(win, stat_win);
 
 		win.clear();
+		stat_win.clear(sf::Color(112, 128, 144));
 
 		manager.update();
 
 		draw_seperation_line(win, 2);
 		win.display();
+		stat_win.display();
 	}
 
 	return 0;
